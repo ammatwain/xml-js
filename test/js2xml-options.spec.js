@@ -1,5 +1,6 @@
 var convert = require('../lib');
 var testItems = require('./test-items');
+var JSON5 = require('json5');
 
 /*global describe,it,expect*/
 
@@ -321,7 +322,7 @@ describe('Testing js2xml.js:', function () {
       var options = {};
       testItems('js2xml', options).forEach(function (test) {
         it(test.desc, function () {
-          expect(convert.json2xml(JSON.stringify(test.js), options)).toEqual(test.xml);
+          expect(convert.json2xml(JSON5.stringify(test.js), options)).toEqual(test.xml);
         });
       });
 
@@ -343,7 +344,7 @@ describe('Testing js2xml.js:', function () {
       var options = {};
       testItems('js2xml', options).forEach(function (test) {
         it(test.desc, function () {
-          expect(convert.json2xml(new Buffer.from(JSON.stringify(test.js)), options)).toEqual(test.xml);
+          expect(convert.json2xml(new Buffer.from(JSON5.stringify(test.js)), options)).toEqual(test.xml);
         });
       });
 

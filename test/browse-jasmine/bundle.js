@@ -410,7 +410,7 @@ module.exports = function (json, options) {
   var js = null;
   if (typeof (json) === 'string') {
     try {
-      js = JSON.parse(json);
+      js = JSON5.parse(json);
     } catch (e) {
       throw new Error('The JSON structure is invalid');
     }
@@ -843,9 +843,9 @@ module.exports = function(xml, userOptions) {
   parentKey = 'compact' in options && options.compact ? '_parent' : 'parent';
   // parentKey = ptions.compact ? '_parent' : 'parent'; // consider this
   if ('addParent' in options && options.addParent) {
-    json = JSON.stringify(js, function (k, v) { return k === parentKey? '_' : v; }, options.spaces);
+    json = JSON5.stringify(js, function (k, v) { return k === parentKey? '_' : v; }, options.spaces);
   } else {
-    json = JSON.stringify(js, null, options.spaces);
+    json = JSON5.stringify(js, null, options.spaces);
   }
   return json.replace(/\u2028/g, '\\u2028').replace(/\u2029/g, '\\u2029');
 };
@@ -6788,7 +6788,7 @@ SafeBuffer.allocUnsafeSlow = function (size) {
 
       if (tag.prefix && !tag.uri) {
         strictFail(parser, 'Unbound namespace prefix: ' +
-          JSON.stringify(parser.tagName))
+          JSON5.stringify(parser.tagName))
         tag.uri = qn.prefix
       }
 
@@ -6825,7 +6825,7 @@ SafeBuffer.allocUnsafeSlow = function (size) {
         // then fail on them now.
         if (prefix && prefix !== 'xmlns' && !uri) {
           strictFail(parser, 'Unbound namespace prefix: ' +
-            JSON.stringify(prefix))
+            JSON5.stringify(prefix))
           a.uri = prefix
         }
         parser.tag.attributes[name] = a
@@ -8586,7 +8586,7 @@ describe('Testing js2xml.js:', function () {
       });
       it('should provide correct arguments', function () {
         expect(args).toContain(' \t <foo></bar> \t ', '_root_', js);
-        // console.log(JSON.stringify(args));
+        // console.log(JSON5.stringify(args));
       });
 
     });
@@ -9597,7 +9597,7 @@ describe('Testing js2xml.js:', function () {
       var options = {};
       testItems('js2xml', options).forEach(function (test) {
         it(test.desc, function () {
-          expect(convert.json2xml(JSON.stringify(test.js), options)).toEqual(test.xml);
+          expect(convert.json2xml(JSON5.stringify(test.js), options)).toEqual(test.xml);
         });
       });
 
@@ -9619,7 +9619,7 @@ describe('Testing js2xml.js:', function () {
       var options = {};
       testItems('js2xml', options).forEach(function (test) {
         it(test.desc, function () {
-          expect(convert.json2xml(new Buffer(JSON.stringify(test.js)), options)).toEqual(test.xml);
+          expect(convert.json2xml(new Buffer(JSON5.stringify(test.js)), options)).toEqual(test.xml);
         });
       });
 
@@ -9922,7 +9922,7 @@ module.exports = function (direction, options) {
     for (key in options) {
       if (key.match(/Key$/)) {
         var keyName = (options.compact ? '_' : '') + key.replace('Key', '');
-        js = JSON.parse(JSON.stringify(js).replace(new RegExp('"' + keyName + '":', 'g'), '"' + options[key] + '":'));
+        js = JSON5.parse(JSON5.stringify(js).replace(new RegExp('"' + keyName + '":', 'g'), '"' + options[key] + '":'));
       }
     }
     return js;
@@ -9975,7 +9975,7 @@ module.exports = function (direction, options) {
     tests[i].js = options.compact ? cases[i].js1 : cases[i].js2;
     tests[i].xml = cases[i].xml;
     if (direction === 'xml2js') {
-      tests[i].js = applyOptions(JSON.parse(JSON.stringify(tests[i].js)));
+      tests[i].js = applyOptions(JSON5.parse(JSON5.stringify(tests[i].js)));
       tests[i].js = applyKeyNames(tests[i].js);
     } else if (direction === 'js2xml') {
       if (!('spaces' in options) || options.spaces === 0 || typeof options.spaces === 'boolean') { tests[i].xml = tests[i].xml.replace(/>\n\v*/gm, '>'); }
@@ -10049,12 +10049,12 @@ describe('Testing xml2js.js:', function () {
       testItems('xml2js', options).forEach(function (test) {
         it(test.desc, function () {
           expect(convert.xml2js(test.xml, options)).toEqual(test.js);
-          // console.log(JSON.stringify(convert.xml2js(test.xml, options)));
+          // console.log(JSON5.stringify(convert.xml2js(test.xml, options)));
         });
         if (test.js.elements && test.js.elements[0].instruction) {
           it('should provide correct arguments', function () {
             expect(args).toContain(test.js.elements[test.js.elements.length-1].instruction, test.js);
-            // console.log(JSON.stringify(args), '---------', test.js.elements[0].instruction);
+            // console.log(JSON5.stringify(args), '---------', test.js.elements[0].instruction);
           });
         }
       });
@@ -10429,7 +10429,7 @@ describe('Testing xml2js.js:', function () {
       };
 
       it('should output as expected json', function () {
-        expect(convert.xml2json(xml, {compact: true})).toEqual(JSON.stringify(json));
+        expect(convert.xml2json(xml, {compact: true})).toEqual(JSON5.stringify(json));
       });
 
     });
@@ -11445,7 +11445,7 @@ describe('Testing xml2js.js:', function () {
       var options = {};
       testItems('xml2js', options).forEach(function (test) {
         it(test.desc, function () {
-          expect(convert.xml2json(test.xml, options)).toEqual(JSON.stringify(test.js));
+          expect(convert.xml2json(test.xml, options)).toEqual(JSON5.stringify(test.js));
         });
       });
 
@@ -11456,7 +11456,7 @@ describe('Testing xml2js.js:', function () {
       var options = {onlyItem: 6, compact: true, addParent: true};
       testItems('xml2js', options).forEach(function (test) {
         it(test.desc, function () {
-          expect(convert.xml2json(test.xml, options)).toBe(JSON.stringify(test.js, function (k, v) { return k === '_parent'? '_' : v; }));
+          expect(convert.xml2json(test.xml, options)).toBe(JSON5.stringify(test.js, function (k, v) { return k === '_parent'? '_' : v; }));
         });
       });
 
@@ -11520,7 +11520,7 @@ describe('Testing xml2js.js:', function () {
       };
 
       it('should output as expected json', function () {
-        expect(convert.xml2json(xml, {compact: true})).toEqual(JSON.stringify(json));
+        expect(convert.xml2json(xml, {compact: true})).toEqual(JSON5.stringify(json));
       });
 
     });

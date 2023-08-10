@@ -50,12 +50,12 @@ describe('Testing xml2js.js:', function () {
       testItems('xml2js', options).forEach(function (test) {
         it(test.desc, function () {
           expect(convert.xml2js(test.xml, options)).toEqual(test.js);
-          // console.log(JSON.stringify(convert.xml2js(test.xml, options)));
+          // console.log(JSON5.stringify(convert.xml2js(test.xml, options)));
         });
         if (test.js.elements && test.js.elements[0].instruction) {
           it('should provide correct arguments', function () {
             expect(args).toContain(test.js.elements[test.js.elements.length-1].instruction, test.js);
-            // console.log(JSON.stringify(args), '---------', test.js.elements[0].instruction);
+            // console.log(JSON5.stringify(args), '---------', test.js.elements[0].instruction);
           });
         }
       });

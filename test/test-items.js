@@ -1,4 +1,5 @@
 var isArray = require('../lib/array-helper').isArray;
+var JSON5 = require('json5');
 
 var cases = [
   {
@@ -193,7 +194,7 @@ module.exports = function (direction, options) {
     for (key in options) {
       if (key.match(/Key$/)) {
         var keyName = (options.compact ? '_' : '') + key.replace('Key', '');
-        js = JSON.parse(JSON.stringify(js).replace(new RegExp('"' + keyName + '":', 'g'), '"' + options[key] + '":'));
+        js = JSON5.parse(JSON5.stringify(js).replace(new RegExp('"' + keyName + '":', 'g'), '"' + options[key] + '":'));
       }
     }
     return js;
@@ -252,7 +253,7 @@ module.exports = function (direction, options) {
     tests[i].js = options.compact ? cases[i].js1 : cases[i].js2;
     tests[i].xml = cases[i].xml;
     if (direction === 'xml2js') {
-      tests[i].js = applyOptions(JSON.parse(JSON.stringify(tests[i].js)));
+      tests[i].js = applyOptions(JSON5.parse(JSON5.stringify(tests[i].js)));
       tests[i].js = applyKeyNames(tests[i].js);
     } else if (direction === 'js2xml') {
       if (!('spaces' in options) || options.spaces === 0 || typeof options.spaces === 'boolean') { tests[i].xml = tests[i].xml.replace(/>\n\v*/gm, '>'); }

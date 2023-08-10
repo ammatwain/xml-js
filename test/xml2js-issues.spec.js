@@ -61,7 +61,7 @@ describe('Testing xml2js.js:', function () {
       };
 
       it('should output as expected json', function () {
-        expect(convert.xml2json(xml, {compact: true})).toEqual(JSON.stringify(json));
+        expect(convert.xml2json(xml, {compact: true})).toEqual(JSON5.stringify(json));
       });
 
     });
@@ -389,7 +389,7 @@ describe('Testing xml2js.js:', function () {
       it('should json to xml and back to json', function () {
         // console.log(convert.xml2json(xml, {compact: true}));
         // expect(convert.js2xml(js, {compact: true})).toEqual(xml);
-        expect(convert.xml2json(xml, {compact: true})).toEqual(JSON.stringify(js));
+        expect(convert.xml2json(xml, {compact: true})).toEqual(JSON5.stringify(js));
       });
 
     });

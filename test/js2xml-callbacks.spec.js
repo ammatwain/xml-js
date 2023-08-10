@@ -64,7 +64,7 @@ describe('Testing js2xml.js:', function () {
       });
       it('should provide correct arguments', function () {
         expect(args).toContain(' \t <foo></bar> \t ', '_root_', js);
-        // console.log(JSON.stringify(args));
+        // console.log(JSON5.stringify(args));
       });
 
     });
